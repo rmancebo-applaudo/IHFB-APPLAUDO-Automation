@@ -51,8 +51,7 @@ End-to-end test automation suite for the [GOES IHFB](https://goes.ihfb.ai/) plat
 │   └── ClassroomListPage.ts    # Classroom list (home) page interactions
 │
 ├── tests/                      # Test specs
-│   └── login.spec.ts           # EI-T138: Home screen validation (student)
-│
+│   └── classroom.spec.ts       # EI-T138: Home screen validation (student)
 ├── playwright.config.ts        # Playwright configuration (baseURL, browsers, etc.)
 └── package.json
 ```

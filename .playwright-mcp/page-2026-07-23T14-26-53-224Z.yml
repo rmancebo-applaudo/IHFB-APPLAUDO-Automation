@@ -1,0 +1,31 @@
+- generic [ref=e2]:
+  - generic:
+    - generic: "Skip to:"
+    - list:
+      - listitem:
+        - link "Top Bar":
+          - /url: "#_r0_"
+      - listitem:
+        - link "Sidebar":
+          - /url: "#_r3_"
+      - listitem:
+        - link "Main Content":
+          - /url: "#_ra_"
+  - generic [ref=e3]:
+    - banner [ref=e4]
+    - navigation "Sidebar" [ref=e20]:
+      - list [ref=e24]:
+        - generic [ref=e26]:
+          - listitem [ref=e28]:
+            - link "Spaces" [ref=e30] [cursor=pointer]:
+              - /url: /jira/projects
+          - listitem [ref=e37]:
+            - link "Filters" [ref=e39] [cursor=pointer]:
+              - /url: /jira/filters
+          - listitem [ref=e46]:
+            - link "Dashboards" [ref=e48] [cursor=pointer]:
+              - /url: /jira/dashboards
+      - generic [ref=e56]:
+        - slider "Resize panel" [ref=e57]: "320"
+        - text: Resize panel
+    - main [ref=e59]

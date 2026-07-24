@@ -35,6 +35,10 @@ export class ClassroomListPage {
     await this.allClassroomsTab.click();
   }
 
+  async clickClassroomItem(nth: number = 0) {
+    await this.classroomItems.nth(nth).getByRole('heading').getByRole('link').click();
+  }
+
   classroomItemTitle(nth: number): Locator {
     return this.classroomItems.nth(nth).getByRole('heading', { level: 3 });
   }

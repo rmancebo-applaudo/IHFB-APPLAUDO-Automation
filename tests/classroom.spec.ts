@@ -130,3 +130,36 @@ test('EI-T145 - Tablero (Estudiante) - Validación general', async ({ page }) =>
   // Botones
   await expect(dashboardPage.dashboardHeading).toBeVisible();
 });
+
+test('EI-T139 - Date Picker (Estudiante) - Validación del selector de fecha', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const classroomListPage = new ClassroomListPage(page);
+
+  // Step 1: Ir a la página correspondiente
+  await loginPage.goto();
+  await expect(loginPage.emailInput).toBeVisible();
+  await expect(loginPage.passwordInput).toBeVisible();
+  await expect(loginPage.loginButton).toBeVisible();
+
+  // Step 2: Iniciar sesión como estudiante
+  await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
+  await classroomListPage.waitForLoad();
+
+  // Step 3: Dar click en el botón de la fecha
+  await classroomListPage.dateButton.click();
+
+  // Un date picker debiera de estar disponible para que el estudiante pueda seleccionar una fecha específica
+  await expect(classroomListPage.datePicker).toBeVisible();
+
+  // Hacer click en Cancelar y confirmar que el date picker se cierra
+  await expect(classroomListPage.cancelarButton).toBeVisible();
+  await classroomListPage.cancelarButton.click();
+  await expect(classroomListPage.datePicker).toBeHidden();
+
+  // Abrir el date picker nuevamente, hacer click en Confirmar y confirmar que se cierra
+  await classroomListPage.dateButton.click();
+  await expect(classroomListPage.datePicker).toBeVisible();
+  await expect(classroomListPage.confirmarButton).toBeVisible();
+  await classroomListPage.confirmarButton.click();
+  await expect(classroomListPage.datePicker).toBeHidden();
+});

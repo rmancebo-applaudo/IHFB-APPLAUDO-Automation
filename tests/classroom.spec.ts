@@ -3,13 +3,16 @@ import { LoginPage } from '../pages/LoginPage';
 import { ClassroomListPage } from '../pages/ClassroomListPage';
 import { ClassroomPage } from '../pages/ClassroomPage';
 import { DashboardPage } from '../pages/DashboardPage';
+import { HeaderPage } from '../pages/HeaderPage';
 
 const STUDENT_EMAIL = 'qa1s1@test.com';
 const STUDENT_PASSWORD = 'test123';
+const STUDENT_NAME = 'Student';
 
 test('EI-T138 - Home/Pantalla de Inicio (Estudiante) - Validación general', async ({ page }) => {
   const loginPage = new LoginPage(page);
   const classroomListPage = new ClassroomListPage(page);
+  const headerPage = new HeaderPage(page);
 
   // Step 1: Ir a la página correspondiente
   await loginPage.goto();
@@ -32,11 +35,11 @@ test('EI-T138 - Home/Pantalla de Inicio (Estudiante) - Validación general', asy
   await expect(classroomListPage.dateButton).toBeVisible();
 
   // Icono con el nombre del estudiante
-  await expect(classroomListPage.accountButton).toBeVisible();
+  await expect(headerPage.accountButton).toBeVisible();
 
   // Opción de Cerrar Sesión
-  await classroomListPage.openAccountMenu();
-  await expect(classroomListPage.logoutMenuItem).toBeVisible();
+  await headerPage.openAccountMenu();
+  await expect(headerPage.logOutButton).toBeVisible();
   await page.keyboard.press('Escape');
 
   // Botones para acceder al aula correspondiente - validar ícono y título por cada aula
@@ -129,6 +132,35 @@ test('EI-T145 - Tablero (Estudiante) - Validación general', async ({ page }) =>
 
   // Botones
   await expect(dashboardPage.dashboardHeading).toBeVisible();
+});
+
+test('EI-T142 - Home/Pantalla de Inicio (Estudiante) - Icono con nombre de estudiante y Cerrar Sesión', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const classroomListPage = new ClassroomListPage(page);
+  const headerPage = new HeaderPage(page);
+
+  // Step 1: Ir a la página correspondiente
+  await loginPage.goto();
+  await expect(loginPage.emailInput).toBeVisible();
+  await expect(loginPage.passwordInput).toBeVisible();
+  await expect(loginPage.loginButton).toBeVisible();
+
+  // Step 2: Iniciar sesión como estudiante
+  await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
+  await classroomListPage.waitForLoad();
+
+  // Step 3: Dar click en el ícono azul de la esquina superior derecha
+  await headerPage.openAccountMenu();
+
+  // Se debe de mostrar el nombre del estudiante y la opción de 'Cerrar Sesión'
+  await expect(headerPage.studentNameInMenu(STUDENT_NAME)).toBeVisible();
+  await expect(headerPage.logOutButton).toBeVisible();
+
+  // Cerrar sesión y verificar que el usuario es redirigido al login
+  await headerPage.logOutButton.click();
+  await expect(loginPage.emailInput).toBeVisible();
+  await expect(loginPage.passwordInput).toBeVisible();
+  await expect(loginPage.loginButton).toBeVisible();
 });
 
 test('EI-T139 - Date Picker (Estudiante) - Validación del selector de fecha', async ({ page }) => {

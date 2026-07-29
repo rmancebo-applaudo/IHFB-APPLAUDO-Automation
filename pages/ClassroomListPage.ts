@@ -6,8 +6,6 @@ export class ClassroomListPage {
   readonly listaDeAulasHeading: Locator;
   readonly yearLabel: Locator;
   readonly dateButton: Locator;
-  readonly accountButton: Locator;
-  readonly logoutMenuItem: Locator;
   readonly allClassroomsTab: Locator;
   readonly classroomItems: Locator;
   readonly datePicker: Locator;
@@ -20,8 +18,6 @@ export class ClassroomListPage {
     this.listaDeAulasHeading = page.getByRole('heading', { name: 'Lista de Aulas', level: 1 });
     this.yearLabel = page.locator('main p').filter({ hasText: new RegExp(`^${new Date().getFullYear()}$`) });
     this.dateButton = page.getByRole('button', { name: /,\s*\d{1,2}\s+de\s+/ });
-    this.accountButton = page.getByRole('button', { name: /Información de la cuenta/ });
-    this.logoutMenuItem = page.getByRole('menuitem', { name: 'Cerrar sesión' });
     this.allClassroomsTab = page.getByRole('tab', { name: /Todo/ });
     this.classroomItems = page.getByRole('list').getByRole('listitem');
     this.datePicker = page.getByRole('dialog');
@@ -31,10 +27,6 @@ export class ClassroomListPage {
 
   async waitForLoad() {
     await this.listaDeAulasHeading.waitFor({ state: 'visible' });
-  }
-
-  async openAccountMenu() {
-    await this.accountButton.click();
   }
 
   async selectAllClassroomsTab() {

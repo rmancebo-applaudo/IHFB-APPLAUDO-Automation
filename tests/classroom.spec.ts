@@ -7,6 +7,7 @@ import { HeaderPage } from '../pages/HeaderPage';
 
 const STUDENT_EMAIL = 'qa1s1@test.com';
 const STUDENT_PASSWORD = 'test123';
+const STUDENT_NAME = 'Student';
 
 test('EI-T138 - Home/Pantalla de Inicio (Estudiante) - Validación general', async ({ page }) => {
   const loginPage = new LoginPage(page);
@@ -152,7 +153,7 @@ test('EI-T142 - Home/Pantalla de Inicio (Estudiante) - Icono con nombre de estud
   await headerPage.openAccountMenu();
 
   // Se debe de mostrar el nombre del estudiante y la opción de 'Cerrar Sesión'
-  await expect(headerPage.studentNameInMenu).toBeVisible();
+  await expect(headerPage.studentNameInMenu(STUDENT_NAME)).toBeVisible();
   await expect(headerPage.logOutButton).toBeVisible();
 
   // Cerrar sesión y verificar que el usuario es redirigido al login

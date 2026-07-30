@@ -26,6 +26,7 @@ export class ClassroomListPage {
   }
 
   async waitForLoad() {
+    await this.page.waitForLoadState('domcontentloaded');
     await this.listaDeAulasHeading.waitFor({ state: 'visible' });
   }
 

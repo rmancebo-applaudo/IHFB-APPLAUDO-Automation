@@ -15,7 +15,7 @@ export class ClassroomPage {
     this.trimesterList = page.locator("xpath=//div[contains(@class,'ExpansionPanel_headerContainer')]");
   }
 
-    async waitForLoad() {
+  async waitForLoad() {
     await this.classroomInfoRegion.waitFor({ state: 'visible' });
   }
 

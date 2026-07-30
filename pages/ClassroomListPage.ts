@@ -27,6 +27,7 @@ export class ClassroomListPage {
 
   async waitForLoad() {
     await this.listaDeAulasHeading.waitFor({ state: 'visible' });
+    await this.page.waitForLoadState('networkidle');
   }
 
   async selectAllClassroomsTab() {

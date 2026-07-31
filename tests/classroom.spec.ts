@@ -228,7 +228,7 @@ test('EI-T139 - Date Picker (Estudiante) - Validación del selector de fecha', a
   await expect(classroomListPage.datePicker).toBeHidden();
 });
 
-test('EI-T - Lista de Tareas (Estudiante) - Validación de No hay asignaciones', async ({ page }) => {
+test('EI-T180 - Lista de Tareas (Estudiante) - Validación de No hay asignaciones', async ({ page }) => {
   const loginPage = new LoginPage(page);
   const classroomListPage = new ClassroomListPage(page);
   const classroomPage = new ClassroomPage(page);

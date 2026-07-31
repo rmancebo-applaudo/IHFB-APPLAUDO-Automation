@@ -4,6 +4,7 @@ import { ClassroomListPage } from '../pages/ClassroomListPage';
 import { ClassroomPage } from '../pages/ClassroomPage';
 import { DashboardPage } from '../pages/DashboardPage';
 import { HeaderPage } from '../pages/HeaderPage';
+import { TaskListPage } from '../pages/TaskListPage';
 
 const STUDENT_EMAIL = 'qa1s1@test.com';
 const STUDENT_PASSWORD = 'test123';
@@ -194,4 +195,39 @@ test('EI-T139 - Date Picker (Estudiante) - Validación del selector de fecha', a
   await expect(classroomListPage.confirmarButton).toBeVisible();
   await classroomListPage.confirmarButton.click();
   await expect(classroomListPage.datePicker).toBeHidden();
+});
+
+test('EI-T - Lista de Tareas (Estudiante) - Validación de No hay asignaciones', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const classroomListPage = new ClassroomListPage(page);
+  const classroomPage = new ClassroomPage(page);
+  const taskListPage = new TaskListPage(page);
+
+  // Step 1: Ir a la página de inicio
+  await loginPage.goto();
+  await expect(loginPage.emailInput).toBeVisible();
+  await expect(loginPage.passwordInput).toBeVisible();
+  await expect(loginPage.loginButton).toBeVisible();
+
+  // Step 2: Iniciar sesión como estudiante sin asignaciones
+  await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
+  await classroomListPage.waitForLoad();
+
+  // Step 3: Seleccionar alguna de las clases listadas
+  await classroomListPage.selectAllClassroomsTab();
+  await classroomListPage.clickClassroomItem(0);
+  await classroomPage.waitForLoad();
+
+  // El 'Espacio de la Clase' se visualiza
+  await expect(classroomPage.classroomInfoRegion).toBeVisible();
+
+  // Step 4: En el panel izquierdo, seleccionar la opción 'Lista de Tareas'
+  await classroomPage.navigateToTaskList();
+  await taskListPage.waitForLoad();
+
+  // La página 'Lista de Tareas' se debe de desplegar
+  await expect(taskListPage.heading).toBeVisible();
+
+  // En el cuadro principal se debe de leer el texto 'No hay asignaciones.'
+  await expect(taskListPage.noAssignmentsText).toBeVisible();
 });

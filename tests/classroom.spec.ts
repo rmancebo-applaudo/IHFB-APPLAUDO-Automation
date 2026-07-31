@@ -259,6 +259,6 @@ test('EI-T - Lista de Tareas (Estudiante) - Validación de No hay asignaciones',
   // La página 'Lista de Tareas' se debe de desplegar
   await expect(taskListPage.heading).toBeVisible();
 
-  // En el cuadro principal se debe de leer el texto 'No hay asignaciones.'
-  await expect(taskListPage.noAssignmentsText).toBeVisible();
+  // En el cuadro principal se debe de leer el texto 'Aún no tienes tareas asignadas.'
+  await expect(taskListPage.noAssignmentsText).toHaveText('Aún no tienes tareas asignadas.');
 });

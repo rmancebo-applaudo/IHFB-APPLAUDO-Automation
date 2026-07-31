@@ -5,6 +5,7 @@ export class ClassroomPage {
   readonly classroomInfoRegion: Locator;
   readonly classroomTitle: Locator;
   readonly miProgresoLink: Locator;
+  readonly listasDeTareasLink: Locator;
   readonly trimesterList: Locator;
 
   constructor(page: Page) {
@@ -12,6 +13,7 @@ export class ClassroomPage {
     this.classroomInfoRegion = page.getByRole('main').getByRole('region').first();
     this.classroomTitle = page.locator("xpath=//p[contains(@class,'h4')]").first();
     this.miProgresoLink = page.getByRole('link', { name: 'Mi progreso' });
+    this.listasDeTareasLink = page.getByRole('link', { name: 'Lista de Tareas' });
     this.trimesterList = page.locator("xpath=//div[contains(@class,'ExpansionPanel_headerContainer')]");
   }
 
@@ -22,5 +24,10 @@ export class ClassroomPage {
   async navigateToMyProgress() {
     await this.miProgresoLink.waitFor({ state: 'visible' });
     await this.miProgresoLink.click();
+  }
+
+  async navigateToTaskList() {
+    await this.listasDeTareasLink.waitFor({ state: 'visible' });
+    await this.listasDeTareasLink.click();
   }
 }

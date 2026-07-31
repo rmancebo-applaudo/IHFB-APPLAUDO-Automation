@@ -52,6 +52,37 @@ test('EI-T138 - Home/Pantalla de Inicio (Estudiante) - Validación general', asy
   }
 });
 
+test('EI-T140 - Home/Pantalla de Inicio (Estudiante) - Mover al espacio de clase', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const classroomListPage = new ClassroomListPage(page);
+  const classroomPage = new ClassroomPage(page);
+
+  // Step 1: Ir a la página correspondiente
+  await loginPage.goto();
+  await expect(loginPage.emailInput).toBeVisible();
+  await expect(loginPage.passwordInput).toBeVisible();
+  await expect(loginPage.loginButton).toBeVisible();
+
+  // Step 2: Iniciar sesión como estudiante
+  await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
+  await classroomListPage.waitForLoad();
+
+  // Step 3: Dar click en alguna de las clases disponibles
+  await classroomListPage.selectAllClassroomsTab();
+  const className = await classroomListPage.classroomItemTitle(0).innerText();
+  await classroomListPage.clickClassroomItem(0);
+  await classroomPage.waitForLoad();
+
+  // El usuario navega al 'espacio de clase': información de la clase es visible
+  await expect(classroomPage.classroomInfoRegion).toBeVisible();
+
+  // El nombre de la clase seleccionada se muestra en la página
+  await expect(classroomPage.classroomTitle).toHaveText(className);
+
+  // Una lista del Trimestre disponible es visible
+  await expect(classroomPage.trimesterList.first()).toBeVisible();
+});
+
 test('EI-T145 - Tablero (Estudiante) - Validación general', async ({ page }) => {
   const loginPage = new LoginPage(page);
   const classroomListPage = new ClassroomListPage(page);

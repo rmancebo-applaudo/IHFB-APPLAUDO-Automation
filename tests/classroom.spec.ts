@@ -4,7 +4,6 @@ import { ClassroomListPage } from '../pages/ClassroomListPage';
 import { ClassroomPage } from '../pages/ClassroomPage';
 import { DashboardPage } from '../pages/DashboardPage';
 import { HeaderPage } from '../pages/HeaderPage';
-import { TaskListPage } from '../pages/TaskListPage';
 import { ErrorNotebookPage } from '../pages/ErrorNotebookPage';
 
 const STUDENT_EMAIL = 'qa1s1@test.com';

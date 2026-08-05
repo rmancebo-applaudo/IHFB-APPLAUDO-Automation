@@ -20,6 +20,11 @@ export class DashboardPage {
   readonly questionsCompletionText: Locator;
   readonly expandCollapseButtons: Locator;
   readonly activitiesCompletionSection: Locator;
+  readonly learningStateByUnitTitle: Locator;
+  readonly lessonCompositionText: Locator;
+  readonly lessonCompletionRateText: Locator;
+  readonly lessonAverageCorrectAnswersText: Locator;
+  readonly lessonActivitiesListText: Locator;
   readonly activitiesCompletionChart: Locator;
   readonly secondActivitiesCompletionChart: Locator;
   readonly thirdActivitiesCompletionChart: Locator;
@@ -78,6 +83,22 @@ export class DashboardPage {
       .getByRole('article', { name: /Ver detalles por unidad/ })
       .getByRole('button')
       .filter({ hasText: /.+/ });
+
+    this.learningStateByUnitTitle = page.getByText('Estado de aprendizaje por unidad');
+    this.lessonCompositionText = page.getByText('Composición de la unidad de clase');
+    this.lessonCompletionRateText = page.getByText('Tasa de finalización de clase');
+    this.lessonAverageCorrectAnswersText = page.getByText('Porcentaje promedio de respuestas correctas');
+    this.lessonActivitiesListText = page.getByText('Lista detallada de actividades de aprendizaje');
+  }
+
+  async expandUnit(index: number): Promise<void> {
+    await this.expandCollapseButtons.nth(index).click();
+  }
+
+  getLessonItems(): Locator {
+    return this.page
+      .getByRole('article', { name: /Ver detalles por unidad/ })
+      .getByRole('link');
   }
 
   async waitForLoad() {

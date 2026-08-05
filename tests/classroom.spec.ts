@@ -4,6 +4,8 @@ import { ClassroomListPage } from '../pages/ClassroomListPage';
 import { ClassroomPage } from '../pages/ClassroomPage';
 import { DashboardPage } from '../pages/DashboardPage';
 import { HeaderPage } from '../pages/HeaderPage';
+import { TaskListPage } from '../pages/TaskListPage';
+import { ErrorNotebookPage } from '../pages/ErrorNotebookPage';
 
 const STUDENT_EMAIL = 'qa1s1@test.com';
 const STUDENT_PASSWORD = 'test123';
@@ -225,4 +227,52 @@ test('EI-T139 - Date Picker (Estudiante) - Validación del selector de fecha', a
   await expect(classroomListPage.confirmarButton).toBeVisible();
   await classroomListPage.confirmarButton.click();
   await expect(classroomListPage.datePicker).toBeHidden();
+});
+
+test('EI-T177 - Libreta de Fallos (Estudiante) - Validación general', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const classroomListPage = new ClassroomListPage(page);
+  const classroomPage = new ClassroomPage(page);
+  const errorNotebookPage = new ErrorNotebookPage(page);
+
+  // Step 1-2: Ir a la página e iniciar sesión como estudiante
+  await loginPage.goto();
+  await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
+  await classroomListPage.waitForLoad();
+
+  // Step 3: Seleccionar alguna de las clases listadas
+  await classroomListPage.selectAllClassroomsTab();
+  const classroomNameLocator = classroomListPage.classroomItemTitle(0);
+  const classroomName = (await classroomNameLocator.textContent())?.trim();
+  if (!classroomName) throw new Error('Classroom name could not be retrieved');
+  await classroomListPage.clickClassroomItem(0);
+  await classroomPage.waitForLoad();
+
+  // El 'Espacio de la Clase' se visualiza
+  await expect(classroomPage.classroomInfoRegion).toBeVisible();
+
+  // Step 4: En el panel izquierdo, seleccionar la opción 'Libreta de Fallos'
+  await classroomPage.navigateToErrorNotebook();
+  await errorNotebookPage.waitForLoad();
+
+  // La información de la 'Libreta de Fallos' se despliega correctamente
+  await expect(errorNotebookPage.mainContent).toBeVisible();
+  // Validar que el nombre del aula está presente en el título
+  await expect(errorNotebookPage.lessonUnitHeading).toContainText(classroomName);
+  // Fecha
+  await expect(errorNotebookPage.dateCard).toBeVisible();
+  // Sección "Enviar respuesta incorrecta"
+  await expect(errorNotebookPage.submitIncorrectAnswerHeading).toBeVisible();
+  // Tabla con columnas
+  await expect(errorNotebookPage.classUnitsColumn).toBeVisible();
+  await expect(errorNotebookPage.contentColumn).toBeVisible();
+  await expect(errorNotebookPage.successRateColumn).toBeVisible();
+  await expect(errorNotebookPage.sendButtonsColumn).toBeVisible();
+  // Al menos una fila de datos
+  await expect(errorNotebookPage.tableRows.nth(1)).toBeVisible();
+  // Botones de envío
+  const sendButtonCount = await errorNotebookPage.sendButtons.count();
+  if (sendButtonCount > 0) {
+    await expect(errorNotebookPage.sendButtons.first()).toBeVisible();
+  }
 });

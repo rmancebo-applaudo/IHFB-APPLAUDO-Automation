@@ -2,20 +2,17 @@ import { type Page, type Locator } from '@playwright/test';
 
 export class TaskListPage {
   readonly page: Page;
-  readonly taskListHeading: Locator;
-  readonly taskItems: Locator;
+  readonly heading: Locator;
+  readonly noAssignmentsText: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.taskListHeading = page.getByRole('heading', { name: 'Lista de tareas', level: 1 });
-    this.taskItems = page.getByRole('main').getByRole('list').getByRole('listitem');
+    this.heading = page.getByRole('heading', { name: 'Lista de Tareas' });
+    this.noAssignmentsText = page.getByText('Aún no tienes tareas asignadas.');
   }
 
   async waitForLoad() {
-    await this.taskListHeading.waitFor({ state: 'visible' });
-  }
-
-  async clickFirstTask() {
-    await this.taskItems.first().getByRole('link').click();
+    await this.heading.waitFor({ state: 'visible' });
+    await this.page.waitForLoadState('domcontentloaded');
   }
 }

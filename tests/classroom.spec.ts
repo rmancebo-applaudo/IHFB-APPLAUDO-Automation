@@ -4,6 +4,7 @@ import { ClassroomListPage } from '../pages/ClassroomListPage';
 import { ClassroomPage } from '../pages/ClassroomPage';
 import { DashboardPage } from '../pages/DashboardPage';
 import { HeaderPage } from '../pages/HeaderPage';
+import { TaskListPage } from '../pages/TaskListPage';
 import { ErrorNotebookPage } from '../pages/ErrorNotebookPage';
 
 const STUDENT_EMAIL = 'qa1s1@test.com';
@@ -261,4 +262,62 @@ test('EI-T180 - Lista de Tareas (Estudiante) - Validación de No hay asignacione
 
   // En el cuadro principal se debe de leer el texto 'Aún no tienes tareas asignadas.'
   await expect(taskListPage.noAssignmentsText).toHaveText('Aún no tienes tareas asignadas.');
+});
+
+test('EI-T156 - Libreta de Fallos (Estudiante) - Validación del botón de selección de clase', async ({ page, context }) => {
+  const loginPage = new LoginPage(page);
+  const classroomListPage = new ClassroomListPage(page);
+  const classroomPage = new ClassroomPage(page);
+  const errorNotebookPage = new ErrorNotebookPage(page);
+
+  // Step 1: Ir a la página correspondiente: 'https://goes.ifhb.ai/'
+  await loginPage.goto();
+  await expect(loginPage.emailInput).toBeVisible();
+
+  // El landing page es desplegado.
+  await expect(loginPage.passwordInput).toBeVisible();
+  await expect(loginPage.loginButton).toBeVisible();
+
+  // Step 2: Iniciar sesión como estudiante
+  // Usuario: qa1s1@test.com, Password: test123
+  await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
+  await classroomListPage.waitForLoad();
+
+  // La sesión inicia correctamente.
+  await expect(classroomListPage.listaDeAulasHeading).toBeVisible();
+
+  // Step 3: Seleccionar alguna de las clases listadas
+  await classroomListPage.selectAllClassroomsTab();
+  await classroomListPage.clickClassroomItem(0);
+  await classroomPage.waitForLoad();
+
+  // El 'Espacio de la Clase' se visualiza.
+  await expect(classroomPage.classroomInfoRegion).toBeVisible();
+
+  // Step 4: En el panel izquierdo, seleccionar la opción 'Libreta de Fallos'
+  await classroomPage.navigateToErrorNotebook();
+  await errorNotebookPage.waitForLoad();
+
+  // La información de la 'Libreta de Fallos' se despliega correctamente.
+  await expect(errorNotebookPage.heading).toBeVisible();
+
+  // Step 5: Dar click en el botón de alguna de las clases (la que tiene fecha)
+  // Wait for new page to open in new tab
+  const [newPage] = await Promise.all([
+    context.waitForEvent('page'),
+    errorNotebookPage.clickClassButtonWithDate(0)
+  ]);
+
+  await newPage.waitForLoadState('networkidle');
+
+  // En un nuevo tab se abre la libreta de fallos de la clase correspondiente.
+  const newPageUrl = newPage.url();
+  expect(newPageUrl).toBeTruthy();
+
+  // Verify the new tab contains error notebook content
+  const newErrorNotebookPage = new ErrorNotebookPage(newPage);
+  await newErrorNotebookPage.waitForLoad();
+  await expect(newErrorNotebookPage.headingText).toBeVisible();
+
+  await newPage.close();
 });

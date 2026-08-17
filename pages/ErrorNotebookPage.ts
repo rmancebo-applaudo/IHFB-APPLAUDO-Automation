@@ -36,9 +36,9 @@ export class ErrorNotebookPage {
     this.tableRows = page.getByRole('row');
     this.sendButton = page.locator("xpath=//*[contains(@class,'7a7wn8')]");
     this.lessonUnitHeading = page.locator('xpath=//h6').first();
-    this.classButtonsWithDate =page.locator('xpath=//a[@title="Abre una nueva ventana"]')
-    this.solveAnswersText =page.locator("xpath=//h2[text()='Resolver respuestas incorrectas']")
-    this.solveLaterBtn =page.locator("xpath=//button[text()='Resolver después']")
+    this.classButtonsWithDate = page.locator('xpath=//a[@title="Abre una nueva ventana"]');
+    this.solveAnswersText = page.locator("xpath=//h2[text()='Resolver respuestas incorrectas']");
+    this.solveLaterBtn = page.locator("xpath=//button[text()='Resolver después']");
   }
 
   async waitForLoad() {

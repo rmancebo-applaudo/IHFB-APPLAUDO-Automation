@@ -264,13 +264,12 @@ test('EI-T180 - Lista de Tareas (Estudiante) - Validación de No hay asignacione
   await expect(taskListPage.noAssignmentsText).toHaveText('Aún no tienes tareas asignadas.');
 });
 
-test('EI-T156 - Libreta de Fallos (Estudiante) - Validación del botón de selección de clase', async ({ page, context }) => {
+test('EI-T179 - Libreta de Fallos (Estudiante) - Validación del botón de selección de clase', async ({ page, context }) => {
   const loginPage = new LoginPage(page);
   const classroomListPage = new ClassroomListPage(page);
   const classroomPage = new ClassroomPage(page);
   const errorNotebookPage = new ErrorNotebookPage(page);
 
-  // Step 1: Ir a la página correspondiente: 'https://goes.ifhb.ai/'
   await loginPage.goto();
   await expect(loginPage.emailInput).toBeVisible();
 
@@ -320,4 +319,52 @@ test('EI-T156 - Libreta de Fallos (Estudiante) - Validación del botón de selec
   await expect(newErrorNotebookPage.headingText).toBeVisible();
 
   await newPage.close();
+});
+
+test('EI-T178 - Libreta de Fallos (Estudiante) - Validación botón "Enviar"', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const classroomListPage = new ClassroomListPage(page);
+  const classroomPage = new ClassroomPage(page);
+  const errorNotebookPage = new ErrorNotebookPage(page);
+
+  await loginPage.goto();
+
+  // El landing page es desplegado
+  await expect(loginPage.emailInput).toBeVisible();
+  await expect(loginPage.passwordInput).toBeVisible();
+  await expect(loginPage.loginButton).toBeVisible();
+
+  // Step 2: Iniciar sesión como estudiante
+  await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
+  await classroomListPage.waitForLoad();
+
+  // La sesión inicia correctamente
+  await expect(classroomListPage.listaDeAulasHeading).toBeVisible();
+
+  // Step 3: Seleccionar alguna de las clases listadas
+  await classroomListPage.selectAllClassroomsTab();
+  await classroomListPage.clickClassroomItem(0);
+  await classroomPage.waitForLoad();
+
+  // El 'Espacio de la Clase' se visualiza
+  await expect(classroomPage.classroomInfoRegion).toBeVisible();
+
+  // Step 4: En el panel izquierdo, seleccionar la opción 'Libreta de Fallos'
+  await classroomPage.navigateToErrorNotebook();
+  await errorNotebookPage.waitForLoad();
+
+  // La información de la 'Libreta de Fallos' se despliega correctamente
+  await expect(errorNotebookPage.heading).toBeVisible();
+
+  // Step 5: En la lista de unidades de clase dar click en el botón enviar
+  // El proceso se ejecuta correctamente
+  await errorNotebookPage.sendButton.first().waitFor({ state: 'visible' });
+  await errorNotebookPage.sendButton.first().click();
+  
+  // Wait for the action to complete
+  await page.waitForLoadState('networkidle');
+  await errorNotebookPage.solveAnswersText.first().waitFor({ state: 'visible' });
+  await errorNotebookPage.solveLaterBtn.click();
+  await errorNotebookPage.solveAnswersText.first().waitFor({ state: 'hidden' });
+  await errorNotebookPage.solveLaterBtn.first().waitFor({ state: 'hidden' });
 });

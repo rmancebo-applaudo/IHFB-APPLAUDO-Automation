@@ -13,10 +13,12 @@ export class ErrorNotebookPage {
   readonly successRateColumn: Locator;
   readonly sendButtonsColumn: Locator;
   readonly tableRows: Locator;
-  readonly sendButtons: Locator;
+  readonly sendButton: Locator;
   readonly lessonUnitHeading: Locator;
   readonly classButtonsWithDate: Locator;
   readonly headingText: Locator;
+  readonly solveAnswersText: Locator;
+  readonly solveLaterBtn: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -32,9 +34,11 @@ export class ErrorNotebookPage {
     this.successRateColumn = page.getByRole('columnheader', { name: /Tasa de aciertos/ });
     this.sendButtonsColumn = page.getByRole('columnheader', { name: 'Enviar' }).first();
     this.tableRows = page.getByRole('row');
-    this.sendButtons = page.getByRole('button', { name: /Enviar/ });
+    this.sendButton = page.locator("xpath=//*[contains(@class,'7a7wn8')]");
     this.lessonUnitHeading = page.locator('xpath=//h6').first();
-    this.classButtonsWithDate =page.locator('xpath=//a[@title="Abre una nueva ventana"]')
+    this.classButtonsWithDate = page.locator('xpath=//a[@title="Abre una nueva ventana"]');
+    this.solveAnswersText = page.locator("xpath=//h2[text()='Resolver respuestas incorrectas']");
+    this.solveLaterBtn = page.locator("xpath=//button[text()='Resolver después']");
   }
 
   async waitForLoad() {

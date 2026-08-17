@@ -264,7 +264,7 @@ test('EI-T180 - Lista de Tareas (Estudiante) - Validación de No hay asignacione
   await expect(taskListPage.noAssignmentsText).toHaveText('Aún no tienes tareas asignadas.');
 });
 
-test('EI-179 - Libreta de Fallos (Estudiante) - Validación del botón de selección de clase', async ({ page, context }) => {
+test('EI-T179 - Libreta de Fallos (Estudiante) - Validación del botón de selección de clase', async ({ page, context }) => {
   const loginPage = new LoginPage(page);
   const classroomListPage = new ClassroomListPage(page);
   const classroomPage = new ClassroomPage(page);

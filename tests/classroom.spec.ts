@@ -278,7 +278,6 @@ test('EI-179 - Libreta de Fallos (Estudiante) - Validación del botón de selecc
   await expect(loginPage.loginButton).toBeVisible();
 
   // Step 2: Iniciar sesión como estudiante
-  // Usuario: qa1s1@test.com, Password: test123
   await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
   await classroomListPage.waitForLoad();
 

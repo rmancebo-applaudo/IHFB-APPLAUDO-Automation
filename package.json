@@ -2,7 +2,15 @@
   "name": "goes---ifhb",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "TEST_ENV=stage playwright test",
+    "test:stage": "TEST_ENV=stage playwright test",
+    "test:production": "TEST_ENV=production playwright test",
+    "test:headed": "TEST_ENV=stage playwright test --headed",
+    "test:headed:production": "TEST_ENV=production playwright test --headed",
+    "test:debug": "TEST_ENV=stage playwright test --debug",
+    "test:ui": "TEST_ENV=stage playwright test --ui"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -10,5 +18,8 @@
   "devDependencies": {
     "@playwright/test": "^1.60.0",
     "@types/node": "^25.9.1"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.5"
   }
 }

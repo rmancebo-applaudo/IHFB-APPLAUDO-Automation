@@ -6,10 +6,10 @@ import { DashboardPage } from '../pages/DashboardPage';
 import { HeaderPage } from '../pages/HeaderPage';
 import { TaskListPage } from '../pages/TaskListPage';
 import { ErrorNotebookPage } from '../pages/ErrorNotebookPage';
-import { getStudentCredentials } from '../config/credentials';
+import { getStudentCredentials, getStudentName } from '../config/credentials';
 
 const { email: STUDENT_EMAIL, password: STUDENT_PASSWORD } = getStudentCredentials();
-const STUDENT_NAME = 'Student';
+const STUDENT_NAME = getStudentName();
 
 test('EI-T138 - Home/Pantalla de Inicio (Estudiante) - Validación general', async ({ page }) => {
   const loginPage = new LoginPage(page);

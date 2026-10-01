@@ -52,6 +52,7 @@ Test credentials are stored securely in environment-specific `.env` files:
 STUDENT_EMAIL_1=...
 STUDENT_EMAIL_2=...
 STUDENT_PASSWORD=...
+STUDENT_NAME=Student     # Expected display name in test assertions
 
 # Teacher credentials (optional)
 TEACHER_EMAIL=...
@@ -81,7 +82,7 @@ Credentials are loaded automatically based on the active environment (`TEST_ENV`
 Tests support multiple environments with automatic URL switching:
 
 - **Stage (Default)**: `http://aprendes.stage.aidt.app`
-- **Production**: `http://aprendes.edu.gob.sv`
+- **Production**: `https://aprendes.edu.gob.sv`
 
 #### Configuration Files:
 - **`.env`** - Default Stage configuration

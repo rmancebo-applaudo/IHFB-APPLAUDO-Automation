@@ -15,7 +15,7 @@ export interface TestUsers {
 
 /**
  * Get student credentials
- * Randomly selects from available student emails if multiple are defined
+ * Returns the first configured student email
  */
 export function getStudentCredentials(): Credentials {
   const emails = [
@@ -53,6 +53,17 @@ export function getTeacherCredentials(): Credentials {
   }
 
   return { email, password };
+}
+
+/**
+ * Get the expected student display name
+ */
+export function getStudentName(): string {
+  const name = process.env.STUDENT_NAME;
+  if (!name) {
+    throw new Error('STUDENT_NAME not configured. Check .env or .env.production');
+  }
+  return name;
 }
 
 /**

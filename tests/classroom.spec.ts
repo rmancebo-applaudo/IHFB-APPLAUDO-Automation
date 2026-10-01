@@ -6,10 +6,10 @@ import { DashboardPage } from '../pages/DashboardPage';
 import { HeaderPage } from '../pages/HeaderPage';
 import { TaskListPage } from '../pages/TaskListPage';
 import { ErrorNotebookPage } from '../pages/ErrorNotebookPage';
+import { getStudentCredentials, getStudentName } from '../config/credentials';
 
-const STUDENT_EMAIL = 'qa1s1@test.com';
-const STUDENT_PASSWORD = 'test123';
-const STUDENT_NAME = 'Student';
+const { email: STUDENT_EMAIL, password: STUDENT_PASSWORD } = getStudentCredentials();
+const STUDENT_NAME = getStudentName();
 
 test('EI-T138 - Home/Pantalla de Inicio (Estudiante) - Validación general', async ({ page }) => {
   const loginPage = new LoginPage(page);
@@ -278,7 +278,6 @@ test('EI-T179 - Libreta de Fallos (Estudiante) - Validación del botón de selec
   await expect(loginPage.loginButton).toBeVisible();
 
   // Step 2: Iniciar sesión como estudiante
-  // Usuario: qa1s1@test.com, Password: test123
   await loginPage.login(STUDENT_EMAIL, STUDENT_PASSWORD);
   await classroomListPage.waitForLoad();
 
